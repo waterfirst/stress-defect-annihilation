@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stress-Defect Annihilation Simulator</title>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+:root { --bg:#0d1117; --card:#161b22; --text:#c9d1d9; --accent:#58a6ff; --accent2:#f78166;
+  --border:#30363d; --eq-bg:#1c2129; --green:#3fb950; --red:#f85149; }
+[data-theme="light"] { --bg:#fff; --card:#f6f8fa; --text:#24292f; --accent:#0969da; --accent2:#cf222e;
+  --border:#d0d7de; --eq-bg:#f0f3f6; --green:#1a7f37; --red:#cf222e; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  background:var(--bg); color:var(--text); min-height:100vh; }
+.header { background:var(--card); border-bottom:1px solid var(--border); padding:12px 20px;
+  display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:100; }
+.header h1 { font-size:16px; font-weight:600; }
+.header h1 span { color:var(--accent); }
+.toggles { display:flex; gap:8px; }
+.toggle-btn { background:var(--border); color:var(--text); border:none; padding:6px 12px;
+  border-radius:6px; cursor:pointer; font-size:12px; font-weight:500; }
+.toggle-btn:hover { background:var(--accent); color:#fff; }
+.main { max-width:1400px; margin:0 auto; padding:16px; display:grid;
+  grid-template-columns:320px 1fr; gap:16px; }
+@media(max-width:900px) { .main { grid-template-columns:1fr; } }
+
+/* Sidebar */
+.sidebar { display:flex; flex-direction:column; gap:12px; }
+.panel { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:14px; }
+.panel h3 { font-size:13px; font-weight:600; margin-bottom:10px; color:var(--accent); text-transform:uppercase; letter-spacing:0.5px; }
+.param { margin-bottom:10px; }
+.param label { display:flex; justify-content:space-between; font-size:11px; color:var(--text); margin-bottom:3px; }
+.param label span { color:var(--accent2); font-weight:600; font-family:'SF Mono',monospace; }
+input[type=range] { width:100%; height:4px; -webkit-appearance:none; background:var(--border);
+  border-radius:2px; outline:none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px;
+  border-radius:50%; background:var(--accent); cursor:pointer; }
+.btn { width:100%; padding:10px; border:none; border-radius:6px; font-weight:600; cursor:pointer;
+  font-size:13px; margin-top:4px; }
+.btn-run { background:var(--green); color:#fff; }
+.btn-run:hover { opacity:0.9; }
+.btn-reset { background:var(--border); color:var(--text); }
+
+/* Content */
+.content { display:flex; flex-direction:column; gap:12px; }
+.viz-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:1100px) { .viz-grid { grid-template-columns:1fr; } }
+.plot-card { background:var(--card); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.plot-card h4 { font-size:11px; font-weight:600; padding:8px 12px; border-bottom:1px solid var(--border);
+  color:var(--accent); text-transform:uppercase; letter-spacing:0.5px; }
+.equation-bar { background:var(--eq-bg); border:1px solid var(--border); border-radius:8px;
+  padding:10px 16px; font-family:'SF Mono','Fira Code',monospace; font-size:12px; overflow-x:auto;
+  white-space:nowrap; text-align:center; }
+.status { font-size:11px; padding:8px 12px; background:var(--card); border:1px solid var(--border);
+  border-radius:6px; display:flex; justify-content:space-between; align-items:center; }
+.status .val { color:var(--accent2); font-weight:600; font-family:monospace; }
+.theory { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:14px; font-size:12px; line-height:1.6; }
+.theory h3 { color:var(--accent); margin-bottom:8px; }
+.theory p { margin-bottom:6px; }
+.tag { display:inline-block; padding:2px 6px; border-radius:3px; font-size:10px; font-weight:600; }
+.tag-new { background:#1f6feb22; color:var(--accent); border:1px solid var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><span>&#x2B24;</span> <span data-i18n="title">Stress-Defect Annihilation Simulator</span>
+    <span class="tag tag-new" data-i18n="tag">Phonon-Assisted</span></h1>
+  <div class="toggles">
+    <button class="toggle-btn" onclick="toggleLang()" id="langBtn">한국어</button>
+    <button class="toggle-btn" onclick="toggleTheme()" id="themeBtn">&#x2600; Light</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="sidebar">
+    <!-- Material -->
+    <div class="panel">
+      <h3 data-i18n="mat">Material Parameters</h3>
+      <div class="param">
+        <label><span data-i18n="tg">Glass Transition Temp T<sub>g</sub></span> <span id="vTg">820</span> K</label>
+        <input type="range" id="sTg" min="600" max="1100" value="820" step="10" oninput="update()">
+      </div>
+      <div class="param">
+        <label><span data-i18n="ea">Activation Energy E<sub>a</sub></span> <span id="vEa">3.0</span> eV</label>
+        <input type="range" id="sEa" min="1.0" max="5.0" value="3.0" step="0.1" oninput="update()">
+      </div>
+      <div class="param">
+        <label><span data-i18n="dth">Thermal Diffusivity D<sub>th</sub></span> <span id="vDth">5.0</span> ×10⁻⁷ m²/s</label>
+        <input type="range" id="sDth" min="1.0" max="20.0" value="5.0" step="0.5" oninput="update()">
+      </div>
+      <div class="param">
+        <label><span data-i18n="soc">Stress-Optical Coeff C</span> <span id="vC">3.0</span> nm/cm/MPa</label>
+        <input type="range" id="sC" min="1.0" max="6.0" value="3.0" step="0.1" oninput="update()">
+      </div>
+    </div>
+
+    <!-- Process -->
+    <div class="panel">
+      <h3 data-i18n="proc">Process Parameters</h3>
+      <div class="param">
+        <label><span data-i18n="tann">Annealing Temp T/T<sub>g</sub></span> <span id="vTratio">0.95</span></label>
+        <input type="range" id="sTratio" min="0.70" max="1.05" value="0.95" step="0.01" oninput="update()">
+      </div>
+      <div class="param">
+        <label><span data-i18n="pitch">Via Pitch l</span> <span id="vL">100</span> μm</label>
+        <input type="range" id="sL" min="30" max="500" value="100" step="10" oninput="update()">
+      </div>
+      <div class="param">
+        <label><span data-i18n="s0">Initial Stress S<sub>σ,0</sub></span> <span id="vS0">0.85</span></label>
+        <input type="range" id="sS0" min="0.1" max="1.0" value="0.85" step="0.01" oninput="update()">
+      </div>
+      <div class="param">
+        <label><span data-i18n="tproc">Process Time</span> <span id="vTproc">5.0</span> s</label>
+        <input type="range" id="sTproc" min="0.1" max="30.0" value="5.0" step="0.1" oninput="update()">
+      </div>
+    </div>
+
+    <button class="btn btn-run" onclick="runSim()" data-i18n="run">▶ Run Simulation</button>
+    <button class="btn btn-reset" onclick="resetParams()" data-i18n="reset">↺ Reset Defaults</button>
+
+    <!-- Theory -->
+    <div class="theory">
+      <h3 data-i18n="theory_title">Key Equations</h3>
+      <p data-i18n="theory1"><strong>Stress Order Parameter:</strong> S<sub>σ</sub> maps deviatoric stress to [0,1] range, directly measurable as birefringence Δn = C·σ₀·S<sub>σ</sub></p>
+      <p data-i18n="theory2"><strong>Phonon Rate:</strong> Γ<sub>ph</sub> couples Debye frequency, Arrhenius activation, and self-limiting factor [1-S<sub>σ</sub>²(T/T<sub>g</sub>)]</p>
+      <p data-i18n="theory3"><strong>Annihilation Time:</strong> t<sub>a</sub> ~ l²/D<sub>th</sub> · η/K · exp(E<sub>a</sub>/k<sub>B</sub>T) scales with via pitch squared</p>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Equation bar -->
+    <div class="equation-bar" id="eqBar">
+      ∂S<sub>σ</sub>/∂t = D<sub>th</sub>∇²S<sub>σ</sub> − Γ<sub>ph</sub>(T,S<sub>σ</sub>)·S<sub>σ</sub> + F<sub>el</sub>/(l²η)
+    </div>
+
+    <!-- Status -->
+    <div class="status">
+      <span><span data-i18n="st_ta">Annihilation Time:</span> <span class="val" id="stTa">—</span></span>
+      <span><span data-i18n="st_gph">Γ<sub>ph</sub>:</span> <span class="val" id="stGph">—</span></span>
+      <span><span data-i18n="st_res">Residual Δn:</span> <span class="val" id="stRes">—</span></span>
+      <span><span data-i18n="st_red">Reduction:</span> <span class="val" id="stRed">—</span></span>
+    </div>
+
+    <!-- Plots -->
+    <div class="viz-grid">
+      <div class="plot-card">
+        <h4 data-i18n="p1">S<sub>σ</sub>(t) — Stress Decay</h4>
+        <div id="plot1" style="height:300px;"></div>
+      </div>
+      <div class="plot-card">
+        <h4 data-i18n="p2">Δn(r) — Birefringence Map</h4>
+        <div id="plot2" style="height:300px;"></div>
+      </div>
+      <div class="plot-card">
+        <h4 data-i18n="p3">Γ<sub>ph</sub>(T) — Phonon Rate vs Temperature</h4>
+        <div id="plot3" style="height:300px;"></div>
+      </div>
+      <div class="plot-card">
+        <h4 data-i18n="p4">t<sub>a</sub>(l) — Annihilation Time vs Pitch</h4>
+        <div id="plot4" style="height:300px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// i18n
+const i18n = {
+  en: { title:"Stress-Defect Annihilation Simulator", tag:"Phonon-Assisted",
+    mat:"Material Parameters", tg:"Glass Transition Temp Tg", ea:"Activation Energy Ea",
+    dth:"Thermal Diffusivity Dth", soc:"Stress-Optical Coeff C",
+    proc:"Process Parameters", tann:"Annealing Temp T/Tg", pitch:"Via Pitch l",
+    s0:"Initial Stress Sσ,0", tproc:"Process Time", run:"▶ Run Simulation",
+    reset:"↺ Reset Defaults", theory_title:"Key Equations",
+    theory1:"<strong>Stress Order Parameter:</strong> Sσ maps deviatoric stress to [0,1], measurable as Δn = C·σ₀·Sσ",
+    theory2:"<strong>Phonon Rate:</strong> Γph couples Debye frequency, Arrhenius activation, and self-limiting factor",
+    theory3:"<strong>Annihilation Time:</strong> ta ~ l²/Dth · η/K · exp(Ea/kBT) scales with pitch²",
+    st_ta:"Annihilation Time:", st_gph:"Γph:", st_res:"Residual Δn:", st_red:"Reduction:",
+    p1:"Sσ(t) — Stress Decay", p2:"Δn(r) — Birefringence Map",
+    p3:"Γph(T) — Phonon Rate vs Temperature", p4:"ta(l) — Annihilation Time vs Pitch" },
+  ko: { title:"응력 결함 소멸 시뮬레이터", tag:"포논 보조",
+    mat:"재료 파라미터", tg:"유리전이온도 Tg", ea:"활성화 에너지 Ea",
+    dth:"열확산계수 Dth", soc:"응력-광학 계수 C",
+    proc:"공정 파라미터", tann:"어닐링 온도 T/Tg", pitch:"비아 간격 l",
+    s0:"초기 응력 Sσ,0", tproc:"공정 시간", run:"▶ 시뮬레이션 실행",
+    reset:"↺ 기본값 복원", theory_title:"핵심 수식",
+    theory1:"<strong>응력 질서 변수:</strong> Sσ는 편차응력을 [0,1]로 매핑, 복굴절로 측정 가능 Δn = C·σ₀·Sσ",
+    theory2:"<strong>포논 이완 속도:</strong> Γph는 데바이 주파수, 아레니우스 활성화, 자기제한 인자를 결합",
+    theory3:"<strong>소멸 시간:</strong> ta ~ l²/Dth · η/K · exp(Ea/kBT), 비아 간격 제곱에 비례",
+    st_ta:"소멸 시간:", st_gph:"Γph:", st_res:"잔류 Δn:", st_red:"감소율:",
+    p1:"Sσ(t) — 응력 감쇠", p2:"Δn(r) — 복굴절 분포",
+    p3:"Γph(T) — 포논 속도 vs 온도", p4:"ta(l) — 소멸 시간 vs 간격" }
+};
+
+function toggleLang() {
+  const html = document.documentElement;
+  const lang = html.dataset.lang === 'en' ? 'ko' : 'en';
+  html.dataset.lang = lang;
+  document.getElementById('langBtn').textContent = lang === 'en' ? '한국어' : 'English';
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
+  });
+  runSim();
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const t = html.dataset.theme === 'dark' ? 'light' : 'dark';
+  html.dataset.theme = t;
+  document.getElementById('themeBtn').innerHTML = t === 'dark' ? '&#x2600; Light' : '&#x1F319; Dark';
+  runSim();
+}
+
+const kB = 8.617e-5; // eV/K
+const nuD = 1e13; // Hz
+
+function getParams() {
+  const p = {
+    Tg: +document.getElementById('sTg').value,
+    Ea: +document.getElementById('sEa').value,
+    Dth: +document.getElementById('sDth').value * 1e-7,
+    C: +document.getElementById('sC').value,
+    Tratio: +document.getElementById('sTratio').value,
+    l: +document.getElementById('sL').value * 1e-6,
+    S0: +document.getElementById('sS0').value,
+    tproc: +document.getElementById('sTproc').value
+  };
+  p.T = p.Tratio * p.Tg;
+  return p;
+}
+
+function update() {
+  ['Tg','Ea','Dth','C','Tratio','L','S0','Tproc'].forEach(k => {
+    const id = 's' + k.charAt(0).toUpperCase() + k.slice(1);
+    const vid = 'v' + k.charAt(0).toUpperCase() + k.slice(1);
+    const el = document.getElementById(id.replace('SL','sL').replace('SS0','sS0').replace('STproc','sTproc').replace('STratio','sTratio').replace('STg','sTg').replace('SEa','sEa').replace('SDth','sDth').replace('SC','sC'));
+    const vel = document.getElementById(vid.replace('VL','vL').replace('VS0','vS0').replace('VTproc','vTproc').replace('VTratio','vTratio').replace('VTg','vTg').replace('VEa','vEa').replace('VDth','vDth').replace('VC','vC'));
+  });
+  document.getElementById('vTg').textContent = document.getElementById('sTg').value;
+  document.getElementById('vEa').textContent = document.getElementById('sEa').value;
+  document.getElementById('vDth').textContent = document.getElementById('sDth').value;
+  document.getElementById('vC').textContent = document.getElementById('sC').value;
+  document.getElementById('vTratio').textContent = document.getElementById('sTratio').value;
+  document.getElementById('vL').textContent = document.getElementById('sL').value;
+  document.getElementById('vS0').textContent = document.getElementById('sS0').value;
+  document.getElementById('vTproc').textContent = document.getElementById('sTproc').value;
+}
+
+function gammaph(T, Tg, Ea, Ssig) {
+  return nuD * Math.exp(-Ea / (kB * T)) * (1 - Ssig*Ssig * (T/Tg));
+}
+
+function resetParams() {
+  document.getElementById('sTg').value=820; document.getElementById('sEa').value=3.0;
+  document.getElementById('sDth').value=5.0; document.getElementById('sC').value=3.0;
+  document.getElementById('sTratio').value=0.95; document.getElementById('sL').value=100;
+  document.getElementById('sS0').value=0.85; document.getElementById('sTproc').value=5.0;
+  update(); runSim();
+}
+
+function runSim() {
+  const p = getParams();
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  const bg = isDark ? '#161b22' : '#f6f8fa';
+  const fg = isDark ? '#c9d1d9' : '#24292f';
+  const grid = isDark ? '#30363d' : '#d0d7de';
+  const layout = { paper_bgcolor:bg, plot_bgcolor:bg, font:{color:fg,size:11},
+    margin:{l:50,r:20,t:10,b:40}, xaxis:{gridcolor:grid}, yaxis:{gridcolor:grid} };
+
+  // Plot 1: S_sigma(t) decay
+  const dt = p.tproc / 500;
+  const ts = [], ss = [], dns = [];
+  let S = p.S0;
+  for (let t=0; t<=p.tproc; t+=dt) {
+    ts.push(t);
+    ss.push(S);
+    dns.push(p.C * 100 * S); // nm retardation
+    const G = gammaph(p.T, p.Tg, p.Ea, S);
+    S = S - G * S * dt;
+    if (S < 1e-10) S = 1e-10;
+  }
+  const Gph0 = gammaph(p.T, p.Tg, p.Ea, p.S0);
+  const tauph = 1/Gph0;
+  const ta = tauph * Math.log(p.S0/0.01);
+  const Sfinal = ss[ss.length-1];
+  const reduction = ((1-Sfinal/p.S0)*100).toFixed(1);
+
+  document.getElementById('stTa').textContent = ta < 100 ? ta.toFixed(2)+' s' : (ta/60).toFixed(1)+' min';
+  document.getElementById('stGph').textContent = Gph0.toExponential(2)+' Hz';
+  document.getElementById('stRes').textContent = (p.C*100*Sfinal).toFixed(3)+' nm';
+  document.getElementById('stRed').textContent = reduction+'%';
+
+  Plotly.newPlot('plot1', [
+    {x:ts, y:ss, type:'scatter', mode:'lines', name:'S<sub>σ</sub>(t)',
+     line:{color:'#58a6ff',width:2.5}},
+    {x:ts, y:ss.map(s=>p.S0*Math.exp(-Gph0*ts[ss.indexOf(s)]||0)), type:'scatter', mode:'lines',
+     name:'exp(-t/τ)', line:{color:'#f78166',width:1.5,dash:'dot'}}
+  ], {...layout, yaxis:{...layout.yaxis, title:'S<sub>σ</sub>', range:[0,1]},
+    xaxis:{...layout.xaxis, title:'Time (s)'}, showlegend:true, legend:{x:0.6,y:0.95,font:{size:10}}});
+
+  // Plot 2: Birefringence 2D map (stress around 2 vias)
+  const N = 80, x2=[], y2=[], z2=[];
+  const lum = p.l*1e6; // um
+  for (let i=0; i<N; i++) {
+    const row = [];
+    for (let j=0; j<N; j++) {
+      const x = (j/N - 0.5) * 4 * lum;
+      const y = (i/N - 0.5) * 4 * lum;
+      const r1 = Math.sqrt((x+lum/2)**2 + y**2) + 5;
+      const r2 = Math.sqrt((x-lum/2)**2 + y**2) + 5;
+      const s1 = p.S0 * 15 / r1;
+      const s2 = p.S0 * 15 / r2;
+      const sTotal = Math.min(s1+s2, 1.0) * Sfinal/p.S0;
+      row.push(sTotal * p.C * 100);
+    }
+    z2.push(row);
+  }
+  Plotly.newPlot('plot2', [{z:z2, type:'heatmap', colorscale:'Portland',
+    colorbar:{title:'Δn (nm)',titlefont:{size:10},tickfont:{size:9}}}],
+    {...layout, xaxis:{...layout.xaxis, title:'x (grid)', showgrid:false},
+     yaxis:{...layout.yaxis, title:'z (grid)', showgrid:false}});
+
+  // Plot 3: Gamma_ph vs T/Tg
+  const trs = [], grs = [];
+  for (let tr=0.7; tr<=1.05; tr+=0.005) {
+    trs.push(tr);
+    grs.push(Math.log10(gammaph(tr*p.Tg, p.Tg, p.Ea, p.S0)));
+  }
+  Plotly.newPlot('plot3', [
+    {x:trs, y:grs, type:'scatter', mode:'lines', line:{color:'#3fb950',width:2.5}},
+    {x:[p.Tratio], y:[Math.log10(Gph0)], type:'scatter', mode:'markers',
+     marker:{color:'#f85149',size:12,symbol:'star'}, name:'Current'}
+  ], {...layout, xaxis:{...layout.xaxis, title:'T / T<sub>g</sub>'},
+    yaxis:{...layout.yaxis, title:'log₁₀(Γ<sub>ph</sub>) [Hz]'}, showlegend:false});
+
+  // Plot 4: ta vs pitch
+  const ls = [], tas = [];
+  for (let ll=30; ll<=500; ll+=5) {
+    ls.push(ll);
+    const lm = ll*1e-6;
+    const taCalc = (lm*lm/p.Dth) / Gph0;
+    tas.push(taCalc);
+  }
+  Plotly.newPlot('plot4', [
+    {x:ls, y:tas, type:'scatter', mode:'lines', line:{color:'#d2a8ff',width:2.5}},
+    {x:[p.l*1e6], y:[ta], type:'scatter', mode:'markers',
+     marker:{color:'#f85149',size:12,symbol:'star'}, name:'Current'}
+  ], {...layout, xaxis:{...layout.xaxis, title:'Via Pitch l (μm)'},
+    yaxis:{...layout.yaxis, title:'t<sub>a</sub> (s)', type:'log'}, showlegend:false});
+}
+
+update();
+runSim();
+</script>
+</body>
+</html>
