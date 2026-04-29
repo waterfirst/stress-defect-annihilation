@@ -1,211 +1,417 @@
-# 📊 데일리 증시 뉴스 텔레그램 봇
+# Laser Stress-Defect Annihilation Simulator
 
-매일 아침 8시, 9시, 오후 3시, 4시에 한국 증시 뉴스와 주요 지수 현황을 텔레그램으로 자동 발송하는 봇입니다.
+**Stress-defect annihilation simulator for laser-processed glass**  
+A hypothesis-driven interactive simulator for exploring how laser-induced residual stress in drilled glass can be relaxed, reduced, or “annihilated” through selective laser annealing, inspired by defect annihilation in liquid-crystal director fields.
 
----
+This project extends the concept of **stress-induced birefringence measurement for crack detection** into a next-step framework:
 
-## 🎯 주요 기능
+> **Measure → Predict → Cure**
 
-| 시간 | 발송 내용 |
-|------|----------|
-| **08:00** | ☀️ 아침 개장 전 브리핑 (코스피/코스닥 현황 + 주요 뉴스) |
-| **09:00** | 🚀 개장 직후 증시 현황 (주요 종목 동향) |
-| **15:00** | ⏰ 장 마감 전 브리핑 (실시간 지수 + 뉴스) |
-| **16:00** | 🌆 장 마감 후 데일리 리포트 (종합 정리) |
+Instead of only detecting crack precursors after Bessel beam laser drilling, this simulator explores the process window where residual stress hotspots may be selectively relaxed before they evolve into cracks.
 
 ---
 
-## 🚀 설치 및 실행 방법
+## 1. Background
 
-### 1. 필요 패키지 설치
+Laser drilling, Bessel beam processing, and through-glass-via (TGV) formation can generate strong residual stress fields in glass. These stresses may remain optically invisible under ordinary microscopy but can appear as **stress-induced birefringence** or **retardation** under polarized optical measurement.
+
+In prior work, retardation mapping and slow-axis analysis were used to detect latent crack precursors around laser-drilled holes. The present simulator builds on that idea and asks a new question:
+
+> Can the residual stress field be treated like a topological defect field and selectively relaxed by laser annealing, similar to defect annihilation in liquid crystals?
+
+---
+
+## 2. Core Concept
+
+The simulator models a laser-induced stress hotspot as a normalized **stress-defect order parameter**:
+
+\[
+S_\sigma = 0
+\]
+
+for a stress-free state, and
+
+\[
+S_\sigma \approx 1
+\]
+
+for a highly stressed defect core.
+
+The optical retardation is assumed to scale with the residual stress level:
+
+\[
+R_{\text{final}} = R_0 \cdot \frac{S_{\text{final}}}{S_0}
+\]
+
+where:
+
+- \(R_0\): initial peak retardation
+- \(S_0\): initial normalized stress-defect strength
+- \(S_{\text{final}}\): residual stress-defect strength after annealing
+
+---
+
+## 3. Model
+
+The simulator uses a simplified relaxation model:
+
+\[
+S(t) = S_{\text{floor}} + (S_0 - S_{\text{floor}})\exp[-k_{\text{eff}}t]
+\]
+
+where:
+
+- \(S(t)\): stress-defect order parameter after annealing time \(t\)
+- \(S_0\): initial stress-defect value
+- \(S_{\text{floor}}\): residual locked stress that cannot be fully removed under the selected condition
+- \(k_{\text{eff}}\): effective relaxation rate
+- \(t\): annealing dwell time
+
+The effective relaxation rate is modeled as:
+
+\[
+k_{\text{eff}} =
+k_0
+\exp\left[
+-\frac{E_a}{k_B}
+\left(
+\frac{1}{T} - \frac{1}{T_g}
+\right)
+\right]
+\cdot
+\text{locality}(r_h/l)
++
+k_{\text{diff}}
+\]
+
+where:
+
+- \(k_0\): reference relaxation rate near \(T_g\)
+- \(E_a\): activation energy
+- \(k_B\): Boltzmann constant
+- \(T\): annealing temperature
+- \(T_g\): glass transition temperature
+- \(r_h\): heated-zone radius
+- \(l\): hole or via pitch
+- \(k_{\text{diff}}\): phenomenological stress diffusion term
+
+The locked residual stress floor is modeled as:
+
+\[
+S_{\text{floor}}
+=
+S_0 \cdot \alpha \cdot \exp(-l/55)
+\cdot
+[
+1 - 0.60 \cdot \text{sigmoid}(T/T_g - 0.91)
+]
+\]
+
+where \(\alpha\) is a stress-locking coefficient representing stress coupling between neighboring drilled holes or via structures.
+
+---
+
+## 4. What the Simulator Shows
+
+The interactive simulator provides four main outputs.
+
+### 4.1 Stress-Defect Decay
+
+Shows how \(S(t)\) decreases with annealing time under the selected process condition.
+
+This plot helps answer:
+
+- Is the selected annealing time sufficient?
+- Is the stress relaxation fast enough?
+- Does the final stress fall below the target threshold?
+
+### 4.2 Annealing Window Map
+
+Maps the relationship between:
+
+- annealing temperature ratio \(T/T_g\)
+- dwell time
+
+The map highlights regions where stress relaxation is effective but shape-risk remains acceptable.
+
+This helps identify a practical process window.
+
+### 4.3 Radial Stress Profile
+
+Compares the local residual stress profile before and after annealing.
+
+This represents selective local stress relaxation around a laser-drilled feature.
+
+### 4.4 Recommended Condition
+
+The simulator searches for a recommended process condition that minimizes a cost function combining:
+
+- residual stress
+- shape-risk
+- dwell time
+- thermal burden
+
+The recommendation is expressed as:
+
+- optimal \(T/T_g\)
+- dwell time
+- predicted residual \(S_{\text{final}}\)
+- predicted residual retardation
+- shape-risk
+- annihilation number
+
+---
+
+## 5. Parameters
+
+### Initial Stress State
+
+| Parameter | Meaning |
+|---|---|
+| `S0` | Initial normalized stress-defect strength |
+| `R0` | Initial peak retardation in nanometers |
+| `pitch` | Hole/via pitch in micrometers |
+| `rh` | Heated-zone radius in micrometers |
+
+### Annealing Dynamics
+
+| Parameter | Meaning |
+|---|---|
+| `Tg` | Glass transition temperature in kelvin |
+| `T/Tg` | Annealing temperature normalized by glass transition temperature |
+| `ta` | Annealing dwell time in seconds |
+| `k0` | Reference relaxation rate near \(T_g\) |
+| `Ea` | Activation energy in electronvolts |
+| `alpha` | Stress-locking coefficient |
+
+### Target Criteria
+
+| Parameter | Meaning |
+|---|---|
+| `S_target` | Target residual stress-defect level |
+| `riskMax` | Maximum allowed shape-risk index |
+
+---
+
+## 6. Presets
+
+The simulator includes three process-oriented presets.
+
+### UDC / Thin Glass
+
+For display cover glass or under-display camera aperture structures.
+
+Typical characteristics:
+
+- smaller pitch
+- smaller heated zone
+- lower allowed shape-risk
+- lower residual stress target
+
+### GCS / TGV
+
+For glass core substrates and through-glass-via structures.
+
+Typical characteristics:
+
+- larger pitch
+- stronger initial stress
+- deeper drilling geometry
+- higher thermal budget
+
+### Conservative Search
+
+For cautious exploration where shape preservation is prioritized over aggressive stress relaxation.
+
+---
+
+## 7. Physical Interpretation
+
+The project is based on the analogy:
+
+| Liquid Crystal System | Laser-Processed Glass System |
+|---|---|
+| Director field | Slow-axis vector field |
+| Disclination | Stress-field singularity |
+| Defect core | Residual stress hotspot |
+| Defect annihilation | Stress relaxation / stress-defect annihilation |
+| Polarized optical texture | Retardation / birefringence map |
+
+In laser-processed glass, the slow-axis map can be interpreted as a vector field associated with principal stress orientation. Regions where the vector field converges, diverges, or changes abruptly can act as mechanical instability points and potential crack precursors.
+
+This simulator assumes that selective annealing can reduce these stress singularities by activating local structural relaxation in the glass network.
+
+---
+
+## 8. Suggested Experimental Validation
+
+The simulator is intended to guide experiments, not replace them.
+
+Recommended validation flow:
+
+1. **Measure initial stress**
+   - Use Mueller matrix polarimetry or retardation imaging.
+   - Extract \(R_0\), slow-axis orientation, and stress hotspot geometry.
+
+2. **Apply selective laser annealing**
+   - Tune annealing temperature, dwell time, and beam size.
+   - Avoid reaching conditions that cause shape deformation, via collapse, or surface damage.
+
+3. **Re-measure residual retardation**
+   - Compare \(R_{\text{final}}\) with the predicted residual value.
+   - Calculate stress reduction.
+
+4. **Validate structural relaxation**
+   - Raman spectroscopy for Si–O network relaxation.
+   - Brillouin light scattering for elastic/phonon velocity changes.
+   - Cross-section microscopy for geometry preservation.
+
+5. **Correlate with crack yield**
+   - Compare predicted low-risk windows with actual crack occurrence after downstream processing.
+
+---
+
+## 9. How to Use
+
+Open the simulator file in a browser:
 
 ```bash
-pip install -r requirements.txt
+open simulator-v2.html
 ```
 
-### 2. 텔레그램 봇 설정
+or, if hosted with GitHub Pages, visit:
 
-#### 2-1. 봇 생성 및 토큰 발급
-1. 텔레그램에서 **@BotFather** 검색
-2. `/newbot` 명령어 입력
-3. 봇 이름 설정 (예: `MyMarketNewsBot`)
-4. 봇 사용자명 설정 (예: `mymarketnews_bot`)
-5. **HTTP API Token** 복사 (예: `123456789:ABCdefGHIjklMNOpqrsTUVwxyz`)
-
-#### 2-2. Chat ID 확인
-1. 텔레그램에서 **@userinfobot** 검색
-2. 아무 메시지나 본인의 Chat ID 확인 (예: `123456789`)
-
-### 3. 환경변수 설정
-
-```bash
-# .env.example 파일을 .env로 복사
-cp .env.example .env
-
-# .env 파일 편집
-nano .env
+```text
+https://waterfirst.github.io/stress-defect-annihilation/simulator-v2.html
 ```
 
-`.env` 파일 내용:
-```
-TELEGRAM_BOT_TOKEN=123456789:ABCdefGHIjklMNOpqrsTUVwxyz
-TELEGRAM_CHAT_ID=123456789
-```
+Adjust the sliders and observe:
 
-### 4. 봇 실행
+- whether residual stress falls below the target
+- whether shape-risk remains acceptable
+- which temperature/time window is recommended
 
-```bash
-python market_news_bot.py
+---
+
+## 10. Output Metrics
+
+| Metric | Meaning |
+|---|---|
+| `S_final` | Predicted residual stress-defect level |
+| `Stress reduction` | Fractional reduction of stress relative to \(S_0\) |
+| `R_final` | Predicted residual retardation |
+| `Shape-risk` | Phenomenological risk of unwanted shape or geometry change |
+| `Annihilation number` | Dimensionless indicator of relaxation strength |
+
+A useful process condition should satisfy:
+
+\[
+S_{\text{final}} \leq S_{\text{target}}
+\]
+
+and
+
+\[
+\text{shape-risk} \leq \text{riskMax}
+\]
+
+---
+
+## 11. Important Disclaimer
+
+This simulator is a **hypothesis-driven exploratory model**.
+
+It is not yet a fully validated physical simulator. The equations are phenomenological and designed to help generate experimental hypotheses and process-window intuition.
+
+Before using the output for real manufacturing decisions, the parameters must be calibrated with experimental data such as:
+
+- measured retardation maps
+- actual crack yield
+- glass composition
+- laser wavelength and pulse profile
+- thermal diffusion geometry
+- annealing temperature distribution
+- post-process mechanical reliability
+
+---
+
+## 12. Research Value
+
+This project proposes a shift in laser glass processing quality control:
+
+### Conventional approach
+
+> Inspect the final hole and reject cracked samples.
+
+### Retardation-based predictive approach
+
+> Detect stress-induced retardation before visible cracking.
+
+### Stress-defect annihilation approach
+
+> Detect the stress hotspot, predict its relaxation window, and selectively anneal it before crack formation.
+
+This creates a possible path toward:
+
+- predictive crack prevention
+- local stress engineering
+- glass core substrate yield improvement
+- UDC aperture reliability improvement
+- process-aware laser annealing recipes
+
+---
+
+## 13. Repository Contents
+
+Suggested structure:
+
+```text
+stress-defect-annihilation/
+├── README.md
+├── index.html
+├── simulator-v2.html
+├── paper.html
+├── paper.pdf
+└── assets/
 ```
 
 ---
 
-## 🖥️ 백그라운드 실행 (컴퓨터 계속 켜놓기)
+## 14. Future Work
 
-### 방법 1: nohup 사용 (간단)
+Planned improvements:
 
-```bash
-nohup python market_news_bot.py > bot.log 2>&1 &
-```
-
-- 로그 확인: `tail -f bot.log`
-- 프로세스 확인: `ps aux | grep market_news_bot`
-- 종료: `kill [PID]`
-
-### 방법 2: screen 사용 (권장)
-
-```bash
-# screen 설치 (Ubuntu/Debian)
-sudo apt-get install screen
-
-# 새 세션 생성
-screen -S market_bot
-
-# 봇 실행
-python market_news_bot.py
-
-# 세션 분리 (Ctrl+A, D)
-
-# 세션 재접속
-screen -r market_bot
-```
-
-### 방법 3: systemd 서비스 등록 (Ubuntu/Linux)
-
-```bash
-# 서비스 파일 생성
-sudo nano /etc/systemd/system/market-news-bot.service
-```
-
-내용 입력:
-```ini
-[Unit]
-Description=Daily Market News Telegram Bot
-After=network.target
-
-[Service]
-Type=simple
-User=your_username
-WorkingDirectory=/path/to/bot/directory
-Environment=PYTHONPATH=/path/to/bot/directory
-ExecStart=/usr/bin/python3 /path/to/bot/directory/market_news_bot.py
-Restart=always
-RestartSec=10
-
-[Install]
-WantedBy=multi-user.target
-```
-
-```bash
-# 서비스 등록 및 시작
-sudo systemctl daemon-reload
-sudo systemctl enable market-news-bot
-sudo systemctl start market-news-bot
-
-# 상태 확인
-sudo systemctl status market-news-bot
-
-# 로그 확인
-sudo journalctl -u market-news-bot -f
-```
+- Import real retardation map data.
+- Fit \(S_0\), \(S_{\text{floor}}\), and \(k_{\text{eff}}\) from experiments.
+- Add 2D stress-field simulation.
+- Add slow-axis vector and singularity tracking.
+- Add crack-risk prediction map.
+- Add multi-step annealing recipes.
+- Compare CO₂ laser, IR laser, and furnace annealing cases.
+- Export recommended annealing conditions as CSV.
 
 ---
 
-## 📝 메시지 예시
+## 15. Citation / Related Work
 
-```
-📊 아침 증시 브리핑 (개장 전)
-🕐 2026년 02월 07일 08:00
-==============================
+This simulator is conceptually connected to research on:
 
-📈 주요 지수
-코스피: 5,163.84 (-207.73, -3.86%)
-코스닥: 1,077.32 (-39.84, -3.57%)
-
-📰 주요 뉴스
-1. [코스피, 3.86% 급락…5,000선 붕괴]
-2. [외국인, 역대 최대 5조원 순매도]
-3. [반도체주 폭락…삼성·하이닉스 동반 하락]
-
-💡 본 정보는 참고용이며, 투자 결정은 본인의 판단에 따라 신중하게 결정하시기 바랍니다.
-```
+- stress-induced birefringence in laser-processed glass
+- photoelastic retardation measurement
+- Bessel beam laser drilling
+- under-display camera glass processing
+- glass core substrate and TGV fabrication
+- liquid crystal defect topology
+- local laser annealing and glass structural relaxation
 
 ---
 
-## ⚙️ 커스터마이징
+## 16. License
 
-### 발송 시간 변경
+Use an appropriate license for your intended release.
 
-`market_news_bot.py` 파일에서 스케줄 시간 수정:
+Suggested options:
 
-```python
-schedule.every().day.at("08:00").do(send_morning_news_8am)  # 원하는 시간으로 변경
-schedule.every().day.at("09:00").do(send_morning_news_9am)
-schedule.every().day.at("15:00").do(send_afternoon_news_3pm)
-schedule.every().day.at("16:00").do(send_closing_news_4pm)
-```
-
-### 뉴스 소스 추가
-
-`get_market_news()` 함수에서 원하는 뉴스 소스 추가 가능
-
----
-
-## 🔧 문제 해결
-
-### "Telegram Bot Token or Chat ID not set" 오류
-- `.env` 파일이 올바른 위치에 있는지 확인
-- 토큰과 Chat ID가 올바르게 입력되었는지 확인
-
-### 메시지가 전송되지 않음
-- 인터넷 연결 확인
-- 텔레그램 봇이 차단되지 않았는지 확인 (@BotFather에서 확인)
-- 봇과의 대화창에서 `/start` 명령어 입력
-
-### 한글 깨짐
-- 터미널 인코딩 UTF-8로 설정: `export LANG=ko_KR.UTF-8`
-
----
-
-## 📄 파일 구조
-
-```
-.
-├── market_news_bot.py    # 메인 스크립트
-├── .env                  # 환경변수 (직접 생성)
-├── .env.example          # 환경변수 템플릿
-├── requirements.txt      # 필요 패키지 목록
-└── README.md            # 이 파일
-```
-
----
-
-## ⚠️ 면책 조항
-
-본 봇에서 제공하는 정보는 투자 참고용이며, 투자 결정에 대한 책임은 사용자 본인에게 있습니다. 시장 상황에 따라 정보가 지연되거나 불완전할 수 있습니다.
-
----
-
-## 📞 문의
-
-문제가 있으시면 텔레그램 봇 설정부터 다시 확인해 주세요!
+- MIT License for open software
+- CC BY 4.0 for explanatory figures and documentation
+- Private/internal license if used for unpublished manufacturing process development
