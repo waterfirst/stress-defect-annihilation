@@ -1,0 +1,14 @@
+{
+  "Fo90_reference_opposite": 0.01711973978583403,
+  "Fo90_reference_same": 0.016272163351328972,
+  "Fo90_opposite_range_over_h": [
+    0.01510788563865267,
+    0.06844628206102626
+  ],
+  "Fo90_same_range_over_h": [
+    0.01439923687061179,
+    0.06633607403402501
+  ],
+  "maximum_absolute_polarity_benefit_percent": 55.77710758289864,
+  "benchmark_finest_relative_l2_error": 2.2417924710017067e-05
+}

@@ -1,5 +1,13 @@
 node_modules/
 dist/
 tmp/
+.codex_packages/
+.pytest_cache/
+__pycache__/
+*.py[cod]
 *.tsbuildinfo
 *.log
+submission/npe/
+submission/olt/SUBMISSION_READINESS.md
+scripts/build_npe_*.py
+scripts/validate_npe_submission.py

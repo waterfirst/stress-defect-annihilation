@@ -1,0 +1,18 @@
+{
+  "artifact": "NPE reduced-order paired-via stress-relaxation calculation",
+  "generated_by": "scripts/build_npe_assets.py",
+  "generative_ai_images_used": false,
+  "model": {
+    "equation": "dq/dFo = div(m grad q) - Da m q",
+    "field_interpretation": "signed scalar proxy for one calibrated deviatoric-stress component",
+    "grid_n_reference": 129,
+    "domain_extent_over_pitch": 6.0,
+    "initial_signature_width_over_pitch": 0.08,
+    "reference_mobility_radius_over_pitch": 0.55,
+    "reference_Da": 0.5,
+    "boundary_condition": "zero normal flux",
+    "integrator": "conservative finite volume in space; explicit Euler in exposure",
+    "stability_factor": 0.18
+  },
+  "interpretive_limit": "Mapping Fo to seconds requires a separately calibrated effective stress mobility D_s,max."
+}

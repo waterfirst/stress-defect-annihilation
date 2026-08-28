@@ -1,0 +1,6 @@
+Highlights
+
+• Retardance was largest at the tested 400-µm depth for both hole pitches.
+• Higher categorical pulse energy produced stronger photoelastic retardance.
+• Scalar field polarity did not create a distinct fast relaxation pathway.
+• Slow-axis maps are qualitative orientation evidence, not crack forecasts.
