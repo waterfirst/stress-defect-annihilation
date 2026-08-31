@@ -12,9 +12,9 @@
 
 ## ⚠️ 제출 전 사용자가 마무리할 것
 1. **COPP 공식 .docx 템플릿에 붙여넣기** — https://www.coppjournal.org/asset/file/COPP_Template.docx (템플릿 구조/서식으로)
-2. **참고문헌 Optica(COPP) 스타일 변환** — 현재 Elsevier 스타일. 목표 형식:
+2. ~~참고문헌 Optica 스타일 변환~~ ✅ 완료 (2026-08-31, 28개). 목표 형식이었음:
    `A. Author, B. Author, and C. Author, "Title of paper," J. Abbrev. vol, pages (year).`
-   (제목 큰따옴표, 권 뒤 쉼표, 연도 괄호를 끝으로) — 28개 일괄 변환은 원하면 도와줄 수 있음
+   (제목 큰따옴표, 권 뒤 쉼표, 연도 괄호 끝) — DOI는 삭제함. 최종 제출 전 육안 재확인 권장.
 3. **OCIS 코드 최종 확인** — 아래 후보 중 2~5개, 7자리 숫자 공식 리스트(opg.optica.org) 대조:
    (140.3390) Laser materials processing / (160.2750) Glass and other amorphous materials /
    (260.1440) Birefringence / (260.5430) Polarization / (120.5410) Polarimetry

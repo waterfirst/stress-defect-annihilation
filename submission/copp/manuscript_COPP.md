@@ -233,58 +233,58 @@ During preparation of this work, the authors used OpenAI Codex to assist with di
 
 ## References
 
-[1] F. Courvoisier, R. Stoian, A. Couairon, Ultrafast laser micro- and nano-processing with nondiffracting and curved beams, Opt. Laser Technol. 80 (2016) 125–137. https://doi.org/10.1016/j.optlastec.2015.11.026.
+[1] F. Courvoisier, R. Stoian, and A. Couairon, "Ultrafast laser micro- and nano-processing with nondiffracting and curved beams," Opt. Laser Technol. 80, 125–137 (2016).
 
-[2] R. Stoian, M.K. Bhuyan, G. Zhang, G. Cheng, R. Meyer, F. Courvoisier, Ultrafast Bessel beams: advanced tools for laser materials processing, Adv. Opt. Technol. 7 (2018) 165–174. https://doi.org/10.1515/aot-2018-0009.
+[2] R. Stoian, M.K. Bhuyan, G. Zhang, G. Cheng, R. Meyer, and F. Courvoisier, "Ultrafast Bessel beams: advanced tools for laser materials processing," Adv. Opt. Technol. 7, 165–174 (2018).
 
-[3] J. Dudutis, J. Pipiras, R. Stonys, E. Daknys, A. Kilikevičius, A. Kasparaitis, G. Račiukaitis, P. Gečys, In-depth comparison of conventional glass cutting technologies with laser-based methods by volumetric scribing using Bessel beam and rear-side machining, Opt. Express 28 (2020) 32133–32151. https://doi.org/10.1364/OE.402567.
+[3] J. Dudutis, J. Pipiras, R. Stonys, E. Daknys, A. Kilikevičius, A. Kasparaitis, G. Račiukaitis, and P. Gečys, "In-depth comparison of conventional glass cutting technologies with laser-based methods by volumetric scribing using Bessel beam and rear-side machining," Opt. Express 28, 32133–32151 (2020).
 
-[4] Y. Ito, R. Shinomoto, K. Nagato, A. Otsu, K. Tatsukoshi, Y. Fukasawa, T. Kizaki, N. Sugita, M. Mitsuishi, Mechanisms of damage formation in glass in the process of femtosecond laser drilling, Appl. Phys. A 124 (2018) 181. https://doi.org/10.1007/s00339-018-1607-4.
+[4] Y. Ito, R. Shinomoto, K. Nagato, A. Otsu, K. Tatsukoshi, Y. Fukasawa, T. Kizaki, N. Sugita, and M. Mitsuishi, "Mechanisms of damage formation in glass in the process of femtosecond laser drilling," Appl. Phys. A 124, 181 (2018).
 
-[5] R. Shinomoto, Y. Ito, T. Kizaki, K. Tatsukoshi, Y. Fukasawa, K. Nagato, N. Sugita, M. Mitsuishi, Experimental analysis of glass drilling with ultrashort pulse lasers, Int. J. Autom. Technol. 10 (2016) 863–873. https://doi.org/10.20965/ijat.2016.p0863.
+[5] R. Shinomoto, Y. Ito, T. Kizaki, K. Tatsukoshi, Y. Fukasawa, K. Nagato, N. Sugita, and M. Mitsuishi, "Experimental analysis of glass drilling with ultrashort pulse lasers," Int. J. Autom. Technol. 10, 863–873 (2016).
 
-[6] Q. Sun, T. Lee, M. Beresna, G. Brambilla, Control of laser induced cumulative stress for efficient processing of fused silica, Sci. Rep. 10 (2020) 3819. https://doi.org/10.1038/s41598-020-60828-3.
+[6] Q. Sun, T. Lee, M. Beresna, and G. Brambilla, "Control of laser induced cumulative stress for efficient processing of fused silica," Sci. Rep. 10, 3819 (2020).
 
-[7] F. Zimmermann, M. Lancry, A. Plech, S. Richter, T. Ullsperger, B. Poumellec, A. Tünnermann, S. Nolte, Ultrashort pulse laser processing of silica at high repetition rates—from network change to residual strain, Int. J. Appl. Glass Sci. 8 (2017) 233–238. https://doi.org/10.1111/ijag.12221.
+[7] F. Zimmermann, M. Lancry, A. Plech, S. Richter, T. Ullsperger, B. Poumellec, A. Tünnermann, and S. Nolte, "Ultrashort pulse laser processing of silica at high repetition rates—from network change to residual strain," Int. J. Appl. Glass Sci. 8, 233–238 (2017).
 
-[8] H. Aben, L. Ainola, J. Anton, Integrated photoelasticity for nondestructive residual stress measurement in glass, Opt. Lasers Eng. 33 (2000) 49–64. https://doi.org/10.1016/S0143-8166(00)00018-X.
+[8] H. Aben, L. Ainola, and J. Anton, "Integrated photoelasticity for nondestructive residual stress measurement in glass," Opt. Lasers Eng. 33, 49–64 (2000).
 
-[9] L. Ainola, H. Aben, Approximate solution of the inverse problem of axisymmetric thermoelasticity for residual stress measurement in glass, J. Therm. Stresses 31 (2008) 165–175. https://doi.org/10.1080/01495730701521843.
+[9] L. Ainola and H. Aben, "Approximate solution of the inverse problem of axisymmetric thermoelasticity for residual stress measurement in glass," J. Therm. Stresses 31, 165–175 (2008).
 
-[10] S. Iwatsuki, H. Hidai, A. Chiba, S. Matsusaka, N. Morita, Examination of internal stress by photoelasticity in laser cleaving of glass, Precis. Eng. 64 (2020) 122–128. https://doi.org/10.1016/j.precisioneng.2020.03.019.
+[10] S. Iwatsuki, H. Hidai, A. Chiba, S. Matsusaka, and N. Morita, "Examination of internal stress by photoelasticity in laser cleaving of glass," Precis. Eng. 64, 122–128 (2020).
 
-[11] N. Zhao, H. Zhang, J. Lu, M. Tang, H. Zhang, Photoelasticity-based stress field analysis of glass under 1064 nm laser irradiation, Opt. Lasers Eng. 181 (2024) 108367. https://doi.org/10.1016/j.optlaseng.2024.108367.
+[11] N. Zhao, H. Zhang, J. Lu, M. Tang, and H. Zhang, "Photoelasticity-based stress field analysis of glass under 1064 nm laser irradiation," Opt. Lasers Eng. 181, 108367 (2024).
 
-[12] K. Ramesh, S. Sasikumar, Digital photoelasticity: recent developments and diverse applications, Opt. Lasers Eng. 135 (2020) 106186. https://doi.org/10.1016/j.optlaseng.2020.106186.
+[12] K. Ramesh and S. Sasikumar, "Digital photoelasticity: recent developments and diverse applications," Opt. Lasers Eng. 135, 106186 (2020).
 
-[13] N. Terakado, R. Sasaki, Y. Takahashi, T. Fujiwara, S. Orihara, Y. Orihara, A novel method for stress evaluation in chemically strengthened glass based on micro-Raman spectroscopy, Commun. Phys. 3 (2020) 37. https://doi.org/10.1038/s42005-020-0305-7.
+[13] N. Terakado, R. Sasaki, Y. Takahashi, T. Fujiwara, S. Orihara, and Y. Orihara, "A novel method for stress evaluation in chemically strengthened glass based on micro-Raman spectroscopy," Commun. Phys. 3, 37 (2020).
 
-[14] M. Bergler, K. Cvecek, F. Werr, A. Veber, J. Schreiner, U.R. Eckstein, K.G. Webber, M. Schmidt, D. de Ligny, Coupling Raman, Brillouin and Nd3+ photoluminescence spectroscopy to distinguish the effect of uniaxial stress from cooling rate on soda–lime silicate glass, Materials 14 (2021) 3584. https://doi.org/10.3390/ma14133584.
+[14] M. Bergler, K. Cvecek, F. Werr, A. Veber, J. Schreiner, U.R. Eckstein, K.G. Webber, M. Schmidt, and D. de Ligny, "Coupling Raman, Brillouin and Nd3+ photoluminescence spectroscopy to distinguish the effect of uniaxial stress from cooling rate on soda–lime silicate glass," Materials 14, 3584 (2021).
 
-[15] M. Bergler, K. Cvecek, F. Werr, M. Brehl, D. de Ligny, M. Schmidt, Cooling rate calibration and mapping of ultra-short pulsed laser modifications in fused silica by Raman and Brillouin spectroscopy, Int. J. Extrem. Manuf. 2 (2020) 035001. https://doi.org/10.1088/2631-7990/ab9583.
+[15] M. Bergler, K. Cvecek, F. Werr, M. Brehl, D. de Ligny, and M. Schmidt, "Cooling rate calibration and mapping of ultra-short pulsed laser modifications in fused silica by Raman and Brillouin spectroscopy," Int. J. Extrem. Manuf. 2, 035001 (2020).
 
-[16] A.Q. Tool, Relation between inelastic deformability and thermal expansion of glass in its annealing range, J. Am. Ceram. Soc. 29 (1946) 240–253. https://doi.org/10.1111/j.1151-2916.1946.tb11592.x.
+[16] A.Q. Tool, "Relation between inelastic deformability and thermal expansion of glass in its annealing range," J. Am. Ceram. Soc. 29, 240–253 (1946).
 
-[17] R. Gardon, O.S. Narayanaswamy, Stress and volume relaxation in annealing flat glass, J. Am. Ceram. Soc. 53 (1970) 380–385. https://doi.org/10.1111/j.1151-2916.1970.tb12137.x.
+[17] R. Gardon and O.S. Narayanaswamy, "Stress and volume relaxation in annealing flat glass," J. Am. Ceram. Soc. 53, 380–385 (1970).
 
-[18] O.S. Narayanaswamy, A model of structural relaxation in glass, J. Am. Ceram. Soc. 54 (1971) 491–498. https://doi.org/10.1111/j.1151-2916.1971.tb12186.x.
+[18] O.S. Narayanaswamy, "A model of structural relaxation in glass," J. Am. Ceram. Soc. 54, 491–498 (1971).
 
-[19] D.C. Larsen, J.J. Mills, J.L. Sievert, Stress relaxation behavior of soda-lime glass between the transformation and softening temperatures, J. Non-Cryst. Solids 14 (1974) 269–279. https://doi.org/10.1016/0022-3093(74)90035-0.
+[19] D.C. Larsen, J.J. Mills, and J.L. Sievert, "Stress relaxation behavior of soda-lime glass between the transformation and softening temperatures," J. Non-Cryst. Solids 14, 269–279 (1974).
 
-[20] J.P. van den Brink, Master stress relaxation function of silica glasses, J. Non-Cryst. Solids 196 (1996) 210–215. https://doi.org/10.1016/0022-3093(95)00588-9.
+[20] J.P. van den Brink, "Master stress relaxation function of silica glasses," J. Non-Cryst. Solids 196, 210–215 (1996).
 
-[21] J.C. Mauro, Y. Yue, A.J. Ellison, P.K. Gupta, D.C. Allan, Viscosity of glass-forming liquids, Proc. Natl. Acad. Sci. U.S.A. 106 (2009) 19780–19784. https://doi.org/10.1073/pnas.0911705106.
+[21] J.C. Mauro, Y. Yue, A.J. Ellison, P.K. Gupta, and D.C. Allan, "Viscosity of glass-forming liquids," Proc. Natl. Acad. Sci. U.S.A. 106, 19780–19784 (2009).
 
-[22] M. Lax, Temperature rise induced by a laser beam, J. Appl. Phys. 48 (1977) 3919–3924. https://doi.org/10.1063/1.324265.
+[22] M. Lax, "Temperature rise induced by a laser beam," J. Appl. Phys. 48, 3919–3924 (1977).
 
-[23] A. Chiba, S. Matsusaka, H. Hidai, N. Morita, Study of thermal stress behavior of sheet glass during laser irradiation using one-dimensional elastic wave model, J. Adv. Mech. Des. Syst. Manuf. 8 (2014) JAMDSM0003. https://doi.org/10.1299/jamdsm.2014jamdsm0003.
+[23] A. Chiba, S. Matsusaka, H. Hidai, and N. Morita, "Study of thermal stress behavior of sheet glass during laser irradiation using one-dimensional elastic wave model," J. Adv. Mech. Des. Syst. Manuf. 8, JAMDSM0003 (2014).
 
-[24] H. Wang, B. Ma, P. Liu, W. Tian, H. Liang, X. Zhang, H. Chen, G. Lu, X. Yang, Time and temperature dependence of residual stress evolution and protrusion behavior in through-glass vias, Microsyst. Nanoeng. 12 (2026) 52. https://doi.org/10.1038/s41378-026-01162-y.
+[24] H. Wang, B. Ma, P. Liu, W. Tian, H. Liang, X. Zhang, H. Chen, G. Lu, and X. Yang, "Time and temperature dependence of residual stress evolution and protrusion behavior in through-glass vias," Microsyst. Nanoeng. 12, 52 (2026).
 
-[25] J.M.D. Lane, Cooling rate and stress relaxation in silica melts and glasses via microsecond molecular dynamics, Phys. Rev. E 92 (2015) 012320. https://doi.org/10.1103/PhysRevE.92.012320.
+[25] J.M.D. Lane, "Cooling rate and stress relaxation in silica melts and glasses via microsecond molecular dynamics," Phys. Rev. E 92, 012320 (2015).
 
-[26] B. Hehlen, A century of structural and vibrational spectroscopy in vitreous silica: a short review, Int. J. Appl. Glass Sci. 13 (2022) 370–387. https://doi.org/10.1111/ijag.16572.
+[26] B. Hehlen, "A century of structural and vibrational spectroscopy in vitreous silica: a short review," Int. J. Appl. Glass Sci. 13, 370–387 (2022).
 
-[27] B. Bhattarai, D.A. Drabold, Vibrations in amorphous silica, J. Non-Cryst. Solids 439 (2016) 6–14. https://doi.org/10.1016/j.jnoncrysol.2016.02.002.
+[27] B. Bhattarai and D.A. Drabold, "Vibrations in amorphous silica," J. Non-Cryst. Solids 439, 6–14 (2016).
 
-[28] C. Oligschleger, Dynamics of SiO2 glasses, Phys. Rev. B 60 (1999) 3182–3193. https://doi.org/10.1103/PhysRevB.60.3182.
+[28] C. Oligschleger, "Dynamics of SiO2 glasses," Phys. Rev. B 60, 3182–3193 (1999).
